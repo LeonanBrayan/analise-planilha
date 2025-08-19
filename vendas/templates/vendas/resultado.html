@@ -1,11 +1,74 @@
-<h2>Resultado da Análise</h2>
-<p><strong>Total de Vendas:</strong> {{ total }}</p>
-<p><strong>Média por Produto:</strong></p>
+{% load static %}
 
-<ul>
-  {% for produto, media in medias.items %}
-    <li>{{ produto }}: {{ media }}</li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado da Análise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
 
-<a href="{% url 'upload' %}">Voltar</a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="#">Analisador CSV</a>
+    </div>
+  </nav>
+
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="card shadow-sm">
+          <div class="card-header bg-success text-white">
+            <h2 class="mb-0">Resultado da Análise</h2>
+          </div>
+          <div class="card-body">
+
+            <p class="fs-5">
+              <strong>Total de Vendas:</strong> {{ total }}
+            </p>
+
+            <h5 class="mt-4">Média por Produto:</h5>
+            <ul class="list-group mb-4">
+              {% for produto, media in medias.items %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ produto }}
+                  <span class="badge bg-primary rounded-pill">{{ media }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <!-- Gráfico -->
+            <div class="mb-4">
+              <canvas id="graficoMedias" height="100"></canvas>
+            </div>
+
+            <a href="{% url 'upload' %}" class="btn btn-secondary w-100">Voltar</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Definindo variáveis JS com os dados do Django -->
+<script>
+  window.graficoLabels = [{% for produto in medias.keys %}'{{ produto }}',{% endfor %}];
+  window.graficoData = [{% for media in medias.values %}{{ media }},{% endfor %}];
+</script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Script para gerar gráfico com Chart.js -->
+<script src="{% static 'meuprojeto/js/grafico_medias.js' %}"></script>
+
+</body>
+</html>
