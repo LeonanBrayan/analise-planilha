@@ -1,4 +1,4 @@
-Análise Planilha
+Análise de Planilha
 
 📊 Um projeto Django que permite fazer upload de planilhas com dados de vendas (em formatos como .csv, .tsv e .xlsx) e analisa os dados usando Pandas, exibindo o total de vendas e a média de valor por produto diretamente no navegador.
 
